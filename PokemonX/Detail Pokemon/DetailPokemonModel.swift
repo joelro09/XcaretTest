@@ -28,19 +28,20 @@ struct Generation: Codable {
 }
 
 struct DetailPokemon: Codable {
+
+
     var id: Int
     var name: String
+    var base_experience: Int
     var is_main_series: Bool
-    var generation: Generation?
-    var effect_entries: Effects?
-    var pokemon: Pok?
+    var abilities: PokAbilities
     
     init(){
         id = 1
         name = "Default"
+        base_experience = 1
         is_main_series = true
-        effect_entries = Effects()
-        pokemon = Pok()
+        abilities = PokAbilities()
     }
 }
 
@@ -54,15 +55,15 @@ struct Effects: Codable {
     }
 }
 
-struct Pok: Codable {
+struct PokAbilities: Codable {
     var is_hidden: Bool
     var slot: Int
-    var pokemon: Pokemon
+    var ability: Pokemon
     
     init(){
         is_hidden = true
         slot = 1
-        pokemon = Pokemon()
+        ability = Pokemon()
     }
 }
 

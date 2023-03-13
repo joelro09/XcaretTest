@@ -13,6 +13,7 @@ class DetailPokemonViewController: UIViewController {
     
     var nombre = ""
     var imagen = ""
+    var url = ""
     
     var pokemon: DetailPokemon?
     let viewModel = DetailPokemonViewModel()
@@ -163,11 +164,13 @@ class DetailPokemonViewController: UIViewController {
             
             viewModel.pokemon.bind { [weak self] pokemon in
                 self?.pokemon = pokemon
-                self?.namePokemon.text = self?.nombre
-                self?.imagePokemon.downloaded(from: pokemon.pokemon?.pokemon.imageURL)
-                self?.descriptionPokemon.text = pokemon.effect_entries?.short_effect
+                self?.namePokemon.text = pokemon.name
+                self?.hpPokemon.text = "\(pokemon.base_experience)"
+                self?.imagePokemon.downloaded(from: pokemon.abilities.ability.imageURL)
+                self?.descriptionPokemon.text = pokemon.abilities.ability.name
             }
         }else {
+            self.namePokemon.text = nombre
             imagePokemon.image = UIImage(named: imagen)
         }
         

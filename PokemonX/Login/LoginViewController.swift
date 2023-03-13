@@ -9,6 +9,8 @@ import UIKit
 import FirebaseAuth
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
+   
+   static  var  isLoginFirebase = false
     
     //enumeración para agregar los tipos de provedores para el login con Firebase
     enum ProviderType: String {
@@ -109,7 +111,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         label.textAlignment = .center
         label.text = "Invalid username and/or password: You did not provide a valid login"
         label.font = UIFont(name: "Arial Rounded MT Bold", size: 16)
-        label.textColor = .red
+        label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isHidden = true
         
@@ -155,24 +157,49 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             return
         }
         //showLoader()
+    
         
-        /*
-        ----- AUTENTICACIÓN CON FIREBASE --------
-         
-        Auth.auth().createUser(withEmail: user, password: pass)
-        Auth.auth().signIn(withEmail: user, password: pass)
-        Auth.auth().signOut()*/
-              
-        if user == usuario && pass == contrasena {
-            print("Login OK")
-            let rootVC = ListPokemonViewController()
-            let navVC = UINavigationController(rootViewController: rootVC)
-            navVC.modalPresentationStyle = .fullScreen
-            self.present(navVC, animated: true)
-        } else {
-            errorLabel.isHidden  = false
+    //--------- AUTENTICACIÖN LOCAL ESTATICA ----------
+        print("VALOR FLAG FIREBASE: \(LoginViewController.isLoginFirebase)")
+        
+        if LoginViewController.isLoginFirebase == false {
+            
+            if user == usuario && pass == contrasena {
+                print("Login OK")
+                let rootVC = ListPokemonViewController()
+                let navVC = UINavigationController(rootViewController: rootVC)
+                navVC.modalPresentationStyle = .fullScreen
+                self.present(navVC, animated: true)
+            } else {
+                errorLabel.isHidden  = false
+            }
         }
-        //viewModel.makeLogin(userName: user, password: pass)
+       
+        
+        
+        //   ----- AUTENTICACIÓN CON FIREBASE --------
+            
+           
+           Auth.auth().signIn(withEmail: user, password: pass) {
+               (result, error) in
+               
+               if error == nil {
+                   
+                   LoginViewController.isLoginFirebase = true
+                   let rootVC = ListPokemonViewController()
+                   let navVC = UINavigationController(rootViewController: rootVC)
+                   navVC.modalPresentationStyle = .fullScreen
+                   self.present(navVC, animated: true)
+                   print("Succes login with firebase")
+                   self.errorLabel.isHidden = true
+               } else {
+                   print("Error login with Firebase")
+                   self.errorLabel.isHidden = false
+               }
+               
+               
+           }
+      
             
         }
     

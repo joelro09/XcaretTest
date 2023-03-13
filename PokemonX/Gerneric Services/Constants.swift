@@ -13,7 +13,7 @@ class Constants {
     static let listPokemonsPath = "https://pokeapi.co/api/v2/pokemon?limit=20"
     
     static func detailPathPok(id: Int) -> String {
-        "https://pokeapi.co/api/v2/ability/\(id)/"
+        "https://pokeapi.co/api/v2/pokemon/\(id)/"
     }
     
     

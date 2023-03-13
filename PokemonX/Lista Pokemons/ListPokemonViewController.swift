@@ -7,6 +7,8 @@
 
 import Foundation
 import UIKit
+import FirebaseAuth
+import FirebaseCore
 
 class ListPokemonViewController: UIViewController {
     //Variable bandera para saber si hay internet
@@ -66,6 +68,16 @@ class ListPokemonViewController: UIViewController {
         //Añadir las vistas
         view.addSubview(collectionPokemons)
         
+     /*
+            Auth.auth().createUser(withEmail: "joelro_09@hotmail.com", password: "passwordfire") {
+            (result, error) in
+                if let result = result, error == nil {
+                    print("oK created user firebase\(result)")
+                } else {
+                    print("Falló regiustrar usuario en Firebase")
+                }
+        }*/
+        
         collectionPokemons.backgroundColor = .white
         collectionPokemons.dataSource = self
         collectionPokemons.delegate = self
@@ -95,6 +107,11 @@ class ListPokemonViewController: UIViewController {
 }
     
     @objc func closeSession() {
+        if LoginViewController.isLoginFirebase == true {
+            try? Auth.auth().signOut()
+            print("Succes logout")
+            LoginViewController.isLoginFirebase = false
+        }
         let vc = LoginViewController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -119,6 +136,7 @@ extension ListPokemonViewController: UICollectionViewDataSource {
         if ListPokemonViewController.isConnected == true {
             let model = pokemomns[indexPath.row]
             cell.pokemonList = model
+            print("URL: \(model.url)")
         } else {
             let model = pokeData[indexPath.row]
             cell.configure(model: model)

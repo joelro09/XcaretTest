@@ -24,15 +24,15 @@ class DetailPokemonViewModel {
                                 }
                                 
                                 guard let data = data else { return }
-                                
+                                print ("ADTOS DATA POKEMON: \(data)")
                                 do {
                                     let pokemonDetail = try JSONDecoder().decode(DetailPokemon.self, from: data)
-                                    
                                     self.pokemon.value = pokemonDetail
                                     
                                     
                                 } catch let error {
-                                    print(error.localizedDescription)
+                                    print("Error al decodificar JSON:", error.localizedDescription)
+                                   
                                 }
                             }
                             
